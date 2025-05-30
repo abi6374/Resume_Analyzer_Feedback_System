@@ -32,8 +32,8 @@ An intelligent resume analysis and building platform that helps job seekers crea
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/abi6374/smart-resume-ai.git
-cd smart-resume-ai
+git clone https://github.com/abi6374/Resume_Analyzer_Feedback_System.git
+cd Smart-AI-Resume-Analyzer
 ```
 
 2. Create and activate a virtual environment:
@@ -297,7 +297,7 @@ Follow the steps below to set up and run the **Smart AI Resume Analyzer** on you
 Open a terminal and run:
 
    ```bash
-   git clone https://github.com/abinivas8/resume-analyzer-ai.git
+   git clone https://github.com/abi6374/Resume_Analyzer_Feedback_System.git
    cd Smart-AI-Resume-Analyzer
    ```
 
@@ -631,16 +631,16 @@ Join the mission! Here's how:
 
 ## 📄 **License**  
 
-This project is licensed under the [MIT License](https://github.com/abinivas8/resume-analyzer-ai/blob/main/LICENSE).  
+This project is licensed under the [MIT License](https://github.com/abi6374/Resume_Analyzer_Feedback_System/blob/main/LICENSE).  
 
 
 ## 🌟 **GitHub Repo**  
 
-Explore the code, contribute, or drop a <img src="https://github.com/user-attachments/assets/35f6838c-52f5-4e48-8a98-c5203f8c57e3" style="width:20px; color: #FFD700" alt="Star GIF"> : [Smart Resume AI Repository](https://github.com/abinivas8/resume-analyzer-ai)  
+Explore the code, contribute, or drop a <img src="https://github.com/user-attachments/assets/35f6838c-52f5-4e48-8a98-c5203f8c57e3" style="width:20px; color: #FFD700" alt="Star GIF"> : [Smart Resume AI Repository](https://github.com/abi6374/Resume_Analyzer_Feedback_System)  
 
 ## 🛡️ Maintainer  
 
-> **_This repository is maintained by [abinivas8](https://github.com/abinivas8)._**  
+> **_This repository is maintained by [abinivas8](https://github.com/abi6374)._**  
 > Have suggestions? Feel free to reach out to [me via email](mailto:het8185@gmail.com). 📧
 
 
@@ -656,8 +656,8 @@ If you appreciate this repository and want to show your support, you can do so t
 
 | ❤️ **Platform**        | 🌟 **Support Link**                                                                                                                                        |
 |------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **GitHub Sponsors**    | [![GitHub Sponsors](https://img.shields.io/badge/GitHub-Sponsor-red?style=flat-square&logo=github)](https://github.com/sponsors/abinivas8)                  |
+| **GitHub Sponsors**    | [![GitHub Sponsors](https://img.shields.io/badge/GitHub-Sponsor-red?style=flat-square&logo=github)](https://github.com/sponsors/abi6374)                  |
 | **Buy Me a Coffee**    | [![Buy Me a Coffee](https://img.shields.io/badge/☕-Buy%20Me%20a%20Coffee-orange?style=flat-square)](https://www.buymeacoffee.com/het81857)                 |
-| **Thanks.dev**         | [![Thanks.dev](https://img.shields.io/badge/💜-Thanks.dev-purple?style=flat-square)](https://thanks.dev/abinivas8)                                          |
+| **Thanks.dev**         | [![Thanks.dev](https://img.shields.io/badge/💜-Thanks.dev-purple?style=flat-square)](https://thanks.dev/abi6374)                                          |
 
 **Thank you for your support! Every bit helps keep this repository going.** 🌈✨
