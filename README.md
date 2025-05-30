@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Smart Resume AI
 
 An intelligent resume analysis and building platform that helps job seekers create professional resumes and improve their chances of landing their dream jobs.
@@ -661,3 +662,6 @@ If you appreciate this repository and want to show your support, you can do so t
 | **Thanks.dev**         | [![Thanks.dev](https://img.shields.io/badge/💜-Thanks.dev-purple?style=flat-square)](https://thanks.dev/abi6374)                                          |
 
 **Thank you for your support! Every bit helps keep this repository going.** 🌈✨
+=======
+# Resume_Analyzer_Feedback_System
+>>>>>>> 78e955a1cc1062cde2df284dd3daa60658c11cd1
