@@ -204,3 +204,9 @@ Thumbs.db
 resume_data.db
 resume_analysis.db
 poppler/
+
+# Ignore database file
+resume_data.db
+
+# Ignore virtual environment
+venv/

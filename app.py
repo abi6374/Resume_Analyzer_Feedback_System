@@ -17,27 +17,24 @@ from utils.resume_analyzer import ResumeAnalyzer
 from utils.ai_resume_analyzer import AIResumeAnalyzer
 from utils.resume_builder import ResumeBuilder
 import pandas as pd
-from dotenv import load_dotenv
 
-# Load environment variables with error handling
+# Load environment variables from Streamlit secrets
 try:
-    # Try to load .env file
-    load_dotenv(encoding='utf-8')
+    # Get API keys from Streamlit secrets
+    google_api_key = st.secrets["api_keys"]["GOOGLE_API_KEY"]
+    openrouter_api_key = st.secrets["api_keys"]["OPENROUTER_API_KEY"]
+    database_url = st.secrets["database"]["DATABASE_URL"]
     
-    # Set API key directly if not found in .env
-    if not os.getenv("GOOGLE_API_KEY"):
-        os.environ["GOOGLE_API_KEY"] = "AIzaSyCVAapEjIYyigJdFV_zqh3mzRh-fVP827s"
+    # Set environment variables
+    os.environ["GOOGLE_API_KEY"] = google_api_key
+    os.environ["OPENROUTER_API_KEY"] = openrouter_api_key
+    os.environ["DATABASE_URL"] = database_url
     
-    if not os.getenv("OPENROUTER_API_KEY"):
-        os.environ["OPENROUTER_API_KEY"] = "your_openrouter_api_key_here"
-    
-    if not os.getenv("DATABASE_URL"):
-        os.environ["DATABASE_URL"] = "sqlite:///resume_data.db"
-        
 except Exception as e:
-    st.error(f"Error loading environment variables: {str(e)}")
-    # Set default values if .env loading fails
-    os.environ["GOOGLE_API_KEY"] = "AIzaSyCVAapEjIYyigJdFV_zqh3mzRh-fVP827s"
+    st.error(f"Error loading secrets: {str(e)}")
+    st.info("Please make sure you have set up your secrets.toml file with the required API keys.")
+    # Set default values if secrets loading fails
+    os.environ["GOOGLE_API_KEY"] = "your_google_api_key_here"
     os.environ["OPENROUTER_API_KEY"] = "your_openrouter_api_key_here"
     os.environ["DATABASE_URL"] = "sqlite:///resume_data.db"
 
@@ -49,9 +46,12 @@ class ResumeApp:
         # Initialize AI analyzer with error handling
         try:
             self.ai_analyzer = AIResumeAnalyzer()
-        except ValueError as e:
-            st.error(str(e))
-            st.info("Please make sure you have set up your .env file with the required API keys.")
+            if not self.ai_analyzer:
+                st.error("Failed to initialize AI analyzer. Please check your API keys.")
+                self.ai_analyzer = None
+        except Exception as e:
+            st.error(f"Error initializing AI analyzer: {str(e)}")
+            st.info("Please make sure you have set up your secrets.toml file with the required API keys.")
             self.ai_analyzer = None
         
         self.resume_builder = ResumeBuilder()
@@ -138,7 +138,7 @@ class ResumeApp:
         
         if self.ai_analyzer is None:
             st.error("AI Analyzer is not available. Please check your API key configuration.")
-            st.info("Make sure you have set up your .env file with the required API keys.")
+            st.info("Make sure you have set up your secrets.toml file with the required API keys.")
             return
             
         uploaded_file = st.file_uploader("Upload your resume (PDF or DOCX)", type=['pdf', 'docx'])

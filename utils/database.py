@@ -5,20 +5,49 @@ import datetime
 import json
 import os
 from dotenv import load_dotenv
+import streamlit as st
 
-# Load environment variables
-load_dotenv()
+def load_env_file():
+    """Try to load .env file with different encodings"""
+    encodings = ['utf-8', 'utf-8-sig', 'latin1', 'cp1252']
+    for encoding in encodings:
+        try:
+            load_dotenv(encoding=encoding)
+            return True
+        except Exception as e:
+            continue
+    return False
 
-# Get database URL from environment variable
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///resume_data.db")
+# Get environment variables from either .env file or Streamlit secrets
+def get_env_var(key, default=None):
+    # First try to get from Streamlit secrets
+    try:
+        if key == "GOOGLE_API_KEY":
+            return st.secrets["api_keys"]["GOOGLE_API_KEY"]
+        elif key == "OPENROUTER_API_KEY":
+            return st.secrets["api_keys"]["OPENROUTER_API_KEY"]
+        elif key == "DATABASE_URL":
+            return st.secrets["database"]["DATABASE_URL"]
+    except Exception:
+        pass
+    
+    # If not found in secrets, try environment variables
+    return os.getenv(key, default)
+
+# Try to load environment variables from .env file (local development)
+if not load_env_file():
+    print("Warning: Could not load .env file with any supported encoding")
+
+# Database configuration
+DATABASE_URL = get_env_var("DATABASE_URL", "sqlite:///resume_data.db")
 
 # Create SQLAlchemy engine
 engine = create_engine(DATABASE_URL)
 
-# Create session factory
-Session = sessionmaker(bind=engine)
+# Create SessionLocal class
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Create base class for models
+# Create Base class
 Base = declarative_base()
 
 # Define the Resume model
@@ -163,7 +192,7 @@ def get_ai_analysis_statistics():
     session = get_database_connection()
     try:
         # Get total number of analyses
-        total_analyses = session.query(func.count(AIAnalysis.id)).scalar() or 0
+        total_analyses = session.query(AIAnalysis).count() or 0
         
         # Get average resume score
         average_score = session.query(func.avg(AIAnalysis.resume_score)).scalar() or 0
@@ -171,7 +200,7 @@ def get_ai_analysis_statistics():
         # Get model usage distribution
         model_usage_query = session.query(
             AIAnalysis.model_used, 
-            func.count(AIAnalysis.id)
+            func.count(AIAnalysis.id).label('count')
         ).group_by(AIAnalysis.model_used).all()
         
         model_usage = {model: count for model, count in model_usage_query}
@@ -179,7 +208,7 @@ def get_ai_analysis_statistics():
         # Get job role distribution
         job_roles_query = session.query(
             AIAnalysis.job_role, 
-            func.count(AIAnalysis.id)
+            func.count(AIAnalysis.id).label('count')
         ).group_by(AIAnalysis.job_role).all()
         
         job_roles = {role: count for role, count in job_roles_query}

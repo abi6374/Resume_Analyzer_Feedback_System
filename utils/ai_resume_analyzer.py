@@ -36,15 +36,15 @@ def clean_markdown(text):
 
 class AIResumeAnalyzer:
     def __init__(self):
-        # Load environment variables
-        load_dotenv()
-        
-        # Configure Google Gemini AI
-        self.google_api_key = os.getenv("GOOGLE_API_KEY")
-        self.openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
+        # Load environment variables from Streamlit secrets
+        try:
+            self.google_api_key = st.secrets["api_keys"]["GOOGLE_API_KEY"]
+            self.openrouter_api_key = st.secrets["api_keys"]["OPENROUTER_API_KEY"]
+        except Exception as e:
+            raise ValueError(f"Error loading API keys from secrets: {str(e)}")
         
         if not self.google_api_key:
-            raise ValueError("Google API key not found. Please set GOOGLE_API_KEY in your .env file.")
+            raise ValueError("Google API key not found. Please set GOOGLE_API_KEY in your secrets.toml file.")
         
         # Configure Google Gemini AI
         genai.configure(api_key=self.google_api_key)
@@ -1338,7 +1338,7 @@ class AIResumeAnalyzer:
             return {"error": "Resume text is required for analysis."}
         
         if not self.google_api_key:
-            return {"error": "Google API key is not configured. Please add it to your .env file."}
+            return {"error": "Google API key is not configured. Please add it to your secrets.toml file."}
         
         try:
             model = genai.GenerativeModel("gemini-1.5-flash")
@@ -1400,48 +1400,42 @@ class AIResumeAnalyzer:
                 session.close()
 
     def get_ai_analysis_statistics(self):
-        """Get statistics about AI resume analyses"""
-        session = None
+        """Get statistics about AI analyses"""
         try:
-            # Get database session
             session = get_database_connection()
             if not session:
-                st.error("Could not connect to database")
                 return None
-            
+
             # Get total number of analyses
-            total_analyses = session.query(func.count(AIAnalysis.id)).scalar() or 0
+            total_analyses = session.query(AIAnalysis).count()
             
-            # Get average score
-            avg_score = session.query(func.avg(AIAnalysis.resume_score)).scalar() or 0
+            # Get average resume score
+            average_score = session.query(func.avg(AIAnalysis.resume_score)).scalar() or 0
             
             # Get model usage distribution
-            model_usage = {}
             model_usage_query = session.query(
                 AIAnalysis.model_used, 
-                func.count(AIAnalysis.id)
+                func.count(AIAnalysis.id).label('count')
             ).group_by(AIAnalysis.model_used).all()
             
             model_usage = {model: count for model, count in model_usage_query}
             
             # Get job role distribution
-            job_roles = {}
             job_roles_query = session.query(
                 AIAnalysis.job_role, 
-                func.count(AIAnalysis.id)
+                func.count(AIAnalysis.id).label('count')
             ).group_by(AIAnalysis.job_role).all()
             
             job_roles = {role: count for role, count in job_roles_query}
             
             return {
                 'total_analyses': total_analyses,
-                'average_score': float(avg_score),
+                'average_score': float(average_score),
                 'model_usage': model_usage,
                 'job_roles': job_roles
             }
-            
         except Exception as e:
-            st.error(f"Error getting AI analysis statistics: {str(e)}")
+            st.error(f"Error getting AI analysis statistics: {e}")
             return None
         finally:
             if session:
