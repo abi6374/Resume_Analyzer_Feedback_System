@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Smart Resume AI
 
 An intelligent resume analysis and building platform that helps job seekers create professional resumes and improve their chances of landing their dream jobs.
