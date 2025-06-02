@@ -577,7 +577,7 @@ class ResumeApp:
         st.write("""
         For any questions, feedback, or support:
         - **Email**: abinivas6374@gmail.com
-        - **GitHub**: [Smart Resume AI Repository](https://github.com/abi6374/smart-resume-ai)
+        - **GitHub**: [Smart Resume AI Repository](https://github.com/abi6374)
         - **LinkedIn**: [G S ABINIVAS](https://linkedin.com/in/abinivas8)
         """)
         
